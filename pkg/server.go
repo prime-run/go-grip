@@ -46,37 +46,41 @@ func (s *Server) Serve(file string) error {
 	reload.DebugLog = log.New(io.Discard, "", 0)
 
 	validThemes := map[string]bool{"light": true, "dark": true, "auto": true}
-
 	if !validThemes[s.theme] {
 		log.Println("Warning: Unknown theme ", s.theme, ", defaulting to 'auto'")
 		s.theme = "auto"
 	}
 
-	dir := http.Dir(directory)
-	chttp := http.NewServeMux()
-	chttp.Handle("/static/", http.FileServer(http.FS(defaults.StaticFiles)))
-	chttp.Handle("/", http.FileServer(dir))
+	// Use a new ServeMux for cleaner handling
+	mux := http.NewServeMux()
 
-	// Regex for markdown
+	// Handler for embedded static assets
+	mux.Handle("/static/", http.FileServer(http.FS(defaults.StaticFiles)))
+
+	// Handler for the content directory
+	contentDir := http.Dir(directory)
+	contentFileServer := http.FileServer(contentDir)
+
+	// Regex for markdown files
 	regex := regexp.MustCompile(`(?i)\.md$`)
 
-	// Serve website with rendered markdown
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		f, err := dir.Open(r.URL.Path)
-		if err == nil {
-			defer f.Close()
-		}
-
-		if err == nil && regex.MatchString(r.URL.Path) {
-			// Open file and convert to html
-			bytes, err := readToString(dir, r.URL.Path)
+	// Main handler for rendering markdown or serving files
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// Check if the URL path looks like a markdown file
+		if regex.MatchString(r.URL.Path) {
+			// Attempt to read the markdown file
+			markdownBytes, err := readToString(contentDir, r.URL.Path)
 			if err != nil {
-				log.Fatal(err)
+				// If reading fails (e.g., file not found), fall back to the file server.
+				// The file server will correctly generate a 404 Not Found error.
+				contentFileServer.ServeHTTP(w, r)
 				return
 			}
-			htmlContent := s.parser.MdToHTML(bytes)
 
-			// Serve
+			// Successfully read the file, so convert it to HTML
+			htmlContent := s.parser.MdToHTML(markdownBytes)
+
+			// Serve the final HTML page using the template
 			err = serveTemplate(w, htmlStruct{
 				Content:      string(htmlContent),
 				Theme:        s.theme,
@@ -85,11 +89,13 @@ func (s *Server) Serve(file string) error {
 				CssCodeDark:  getCssCode("github-dark"),
 			})
 			if err != nil {
-				log.Fatal(err)
+				log.Println("Error serving template:", err)
+				http.Error(w, "Could not serve template", http.StatusInternalServerError)
 				return
 			}
 		} else {
-			chttp.ServeHTTP(w, r)
+			// Not a markdown file, so serve it as a static file from the content directory
+			contentFileServer.ServeHTTP(w, r)
 		}
 	})
 
@@ -97,11 +103,8 @@ func (s *Server) Serve(file string) error {
 	if file == "" {
 		// If README.md exists then open README.md at beginning
 		readme := "README.md"
-		f, err := dir.Open(readme)
-		if err == nil {
-			defer f.Close()
-		}
-		if err == nil {
+		if f, err := contentDir.Open(readme); err == nil {
+			f.Close()
 			addr, _ = url.JoinPath(addr, readme)
 		}
 	} else {
@@ -117,7 +120,8 @@ func (s *Server) Serve(file string) error {
 		}
 	}
 
-	handler := reload.Handle(http.DefaultServeMux)
+	// Wrap the new mux with the reload handler
+	handler := reload.Handle(mux)
 	return http.ListenAndServe(fmt.Sprintf(":%d", s.port), handler)
 }
 

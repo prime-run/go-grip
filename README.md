@@ -1,4 +1,3 @@
-<!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="#">
@@ -11,6 +10,9 @@
     Render your markdown files local<br>- with the look of GitHub
   </p>
 </div>
+
+> [!NOTE]
+> This is a fork of [go-grip](https://github.com/chrishrb/go-grip)
 
 ## :question: About
 
@@ -65,7 +67,7 @@ go-grip README.md
 go-grip
 ```
 
-The browser will automatically open on http://localhost:6419. You can disable this behaviour with the `-b=false` option.
+The browser will automatically open on <http://localhost:6419>. You can disable this behaviour with the `-b=false` option.
 
 You can also specify a port:
 
