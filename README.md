@@ -4,7 +4,7 @@
     <img src=".github/docs/logo-1.png" alt="Logo" height="120">
   </a>
 
-  <h3 align="center">go-grip</h3>
+  <h3 align="center">mdhub</h3>
 
   <p align="center">
     Render your markdown files local<br>- with the look of GitHub
@@ -16,9 +16,9 @@
 
 ## :question: About
 
-**go-grip** is a lightweight, Go-based tool designed to render Markdown files locally, replicating GitHub's style. It offers features like syntax highlighting, dark mode, and support for mermaid diagrams, providing a seamless and visually consistent way to preview Markdown files in your browser.
+**mdhub** is a lightweight, Go-based tool designed to render Markdown files locally, replicating GitHub's style. It offers features like syntax highlighting, dark mode, and support for mermaid diagrams, providing a seamless and visually consistent way to preview Markdown files in your browser.
 
-This project is a reimplementation of the original Python-based [grip](https://github.com/joeyespo/grip), which uses GitHub's web API for rendering. By eliminating the reliance on external APIs, go-grip delivers similar functionality while being fully self-contained, faster, and more secure - perfect for offline use or privacy-conscious users.
+This project is a reimplementation of the original Python-based [grip](https://github.com/joeyespo/grip), which uses GitHub's web API for rendering. By eliminating the reliance on external APIs, mdhub delivers similar functionality while being fully self-contained, faster, and more secure - perfect for offline use or privacy-conscious users.
 
 ## :zap: Features
 
@@ -47,10 +47,10 @@ graph TD;
 
 ## :rocket: Getting started
 
-To install go-grip, simply:
+To install mdhub, simply:
 
 ```bash
-go install github.com/chrishrb/go-grip@latest
+go install github.com/prime-run/mdhub@latest
 ```
 
 > [!TIP]
@@ -62,9 +62,9 @@ go install github.com/chrishrb/go-grip@latest
 To render the `README.md` file simply execute:
 
 ```bash
-go-grip README.md
+mdhub README.md
 # or
-go-grip
+mdhub
 ```
 
 The browser will automatically open on <http://localhost:6419>. You can disable this behaviour with the `-b=false` option.
@@ -72,19 +72,19 @@ The browser will automatically open on <http://localhost:6419>. You can disable 
 You can also specify a port:
 
 ```bash
-go-grip -p 80 README.md
+mdhub -p 80 README.md
 ```
 
 or just open a file-tree with all available files in the current directory:
 
 ```bash
-go-grip -r=false
+mdhub -r=false
 ```
 
 It's also possible to activate the darkmode:
 
 ```bash
-go-grip -d .
+mdhub -d .
 ```
 
 To terminate the current server simply press `CTRL-C`.

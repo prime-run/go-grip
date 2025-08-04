@@ -15,7 +15,7 @@ import (
 	"github.com/aarol/reload"
 	chroma_html "github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/alecthomas/chroma/v2/styles"
-	"github.com/chrishrb/go-grip/defaults"
+	"github.com/prime-run/mdhub/defaults"
 )
 
 type Server struct {

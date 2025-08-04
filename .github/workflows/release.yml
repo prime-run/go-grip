@@ -31,5 +31,5 @@ jobs:
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
         goversion: 1.23
-        binary_name: "go-grip"
+        binary_name: "mdhub"
         extra_files: LICENSE README.md

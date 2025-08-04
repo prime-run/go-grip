@@ -1,4 +1,4 @@
-module github.com/chrishrb/go-grip
+module github.com/prime-run/mdhub
 
 go 1.23
 

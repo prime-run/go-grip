@@ -3,12 +3,12 @@ package cmd
 import (
 	"os"
 
-	"github.com/chrishrb/go-grip/pkg"
+	"github.com/prime-run/mdhub/pkg"
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "go-grip [file]",
+	Use:   "mdhub [file]",
 	Short: "Render markdown document as html",
 	Args:  cobra.MatchAll(cobra.OnlyValidArgs),
 	RunE: func(cmd *cobra.Command, args []string) error {

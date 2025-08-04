@@ -20,7 +20,7 @@ emojiscraper: ## Run emojiscraper
 	go run -tags debug main.go emojiscraper defaults/static/emojis pkg/emoji_map.go
 
 build: ## Build
-	go build -tags debug -o bin/go-grip main.go
+	go build -tags debug -o bin/mdhub main.go
 
 vendor: ## Vendor
 	go mod vendor
@@ -30,12 +30,12 @@ test: ## Test
 
 compile: ## Compile for every OS and Platform
 	echo "Compiling for every OS and Platform"
-	GOOS=darwin GOARCH=amd64 go build -o bin/go-grip-darwin-amd64 main.go
-	GOOS=darwin GOARCH=arm64 go build -o bin/go-grip-darwin-arm64 main.go
-	GOOS=linux GOARCH=amd64 go build -o bin/go-grip-linux-amd64 main.go
-	GOOS=linux GOARCH=arm64 go build -o bin/go-grip-linux-arm64 main.go
-	GOOS=windows GOARCH=amd64 go build -o bin/go-grip-windows-amd64.exe main.go
-	GOOS=windows GOARCH=arm64 go build -o bin/go-grip-windows-arm64.exe main.go
+	GOOS=darwin GOARCH=amd64 go build -o bin/mdhub-darwin-amd64 main.go
+	GOOS=darwin GOARCH=arm64 go build -o bin/mdhub-darwin-arm64 main.go
+	GOOS=linux GOARCH=amd64 go build -o bin/mdhub-linux-amd64 main.go
+	GOOS=linux GOARCH=arm64 go build -o bin/mdhub-linux-arm64 main.go
+	GOOS=windows GOARCH=amd64 go build -o bin/mdhub-windows-amd64.exe main.go
+	GOOS=windows GOARCH=arm64 go build -o bin/mdhub-windows-arm64.exe main.go
 
 format: ## Format code
 	${GOCMD} fmt ./...
